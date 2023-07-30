@@ -59,8 +59,7 @@ public class Letter {
     @Builder
     public Letter(String reservationKey, String senderName, String recipientName,
             String recipientEmail, LocalDate scheduledDate, Integer duration,
-            String content, String password, LetterStatus letterStatus, LocalDateTime createdDatetime,
-            LocalDateTime updatedDatetime) {
+            String content, String password, LetterStatus letterStatus) {
         this.reservationKey = reservationKey;
         this.senderName = senderName;
         this.recipientName = recipientName;
@@ -70,7 +69,5 @@ public class Letter {
         this.content = content;
         this.password = password;
         this.letterStatus = letterStatus;
-        this.createdDatetime = createdDatetime;
-        this.updatedDatetime = updatedDatetime;
     }
 }
