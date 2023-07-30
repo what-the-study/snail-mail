@@ -2,6 +2,7 @@ package com.snailmail.back.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -15,11 +16,15 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "letters")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class Letter {
 
     @Id
@@ -53,14 +58,17 @@ public class Letter {
     @Enumerated(value = EnumType.STRING)
     private LetterStatus letterStatus;
 
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdDatetime;
+
+    @LastModifiedDate
     private LocalDateTime updatedDatetime;
 
     @Builder
     public Letter(String reservationKey, String senderName, String recipientName,
             String recipientEmail, LocalDate scheduledDate, Integer duration,
-            String content, String password, LetterStatus letterStatus, LocalDateTime createdDatetime,
-            LocalDateTime updatedDatetime) {
+            String content, String password, LetterStatus letterStatus) {
         this.reservationKey = reservationKey;
         this.senderName = senderName;
         this.recipientName = recipientName;
@@ -70,7 +78,5 @@ public class Letter {
         this.content = content;
         this.password = password;
         this.letterStatus = letterStatus;
-        this.createdDatetime = createdDatetime;
-        this.updatedDatetime = updatedDatetime;
     }
 }
