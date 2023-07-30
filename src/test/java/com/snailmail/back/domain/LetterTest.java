@@ -20,7 +20,7 @@ class LetterTest {
     }
 
     @Test
-    @DisplayName("편지 객체 정상 생성 여부 확인")
+    @DisplayName("편지 객체가 정상적으로 생성되는지 확인한다.")
     void saveLetterTest() {
         // given
         Letter letter = Letter.builder()
