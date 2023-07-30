@@ -4,5 +4,5 @@ public enum LetterStatus {
 
     SCHEDULED,
     SENT,
-    FAILURE
+    FAILED
 }
