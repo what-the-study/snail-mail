@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LetterCreateRequest {
 
-    private String reservationKey;
     private String senderName;
     private String recipientName;
     private String recipientEmail;
@@ -18,17 +17,22 @@ public class LetterCreateRequest {
     private String content;
     private String password;
 
-    public Letter toEntity(LocalDate scheduledDate) {
+    public Letter toEntity() {
         return Letter.builder()
-                .reservationKey(reservationKey)
                 .senderName(senderName)
                 .recipientName(recipientName)
                 .recipientEmail(recipientEmail)
                 .duration(duration)
-                .scheduledDate(scheduledDate)
+                .scheduledDate(getScheduledDate())
                 .content(content)
                 .password(password)
                 .letterStatus(LetterStatus.SCHEDULED)
                 .build();
+    }
+
+    private LocalDate getScheduledDate() {
+        LocalDate today = LocalDate.now();
+
+        return today.plusDays(duration);
     }
 }

@@ -1,5 +1,6 @@
 package com.snailmail.back.domain;
 
+import com.snailmail.back.utils.StringUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -31,7 +33,7 @@ public class Letter {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(unique = true, length = 100)
     private String reservationKey;
 
     @Column(nullable = false, length = 15)
@@ -78,5 +80,13 @@ public class Letter {
         this.content = content;
         this.password = password;
         this.letterStatus = letterStatus;
+    }
+
+    public void registerReservationKey() {
+        String prefix = StringUtil.localDateToString(LocalDate.now());
+        String infix = StringUtil.fillZero(id);
+        String suffix = StringUtil.getRandomUppercaseString();
+
+        this.reservationKey = MessageFormat.format("{0}{1}{2}", prefix, infix, suffix);
     }
 }

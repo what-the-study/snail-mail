@@ -4,7 +4,6 @@ import com.snailmail.back.domain.Letter;
 import com.snailmail.back.dto.request.LetterCreateRequest;
 import com.snailmail.back.dto.response.LetterResponse;
 import com.snailmail.back.repository.LetterRepository;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +16,9 @@ public class LetterService {
 
     @Transactional
     public LetterResponse createLetter(LetterCreateRequest request) {
-        LocalDate today = LocalDate.now();
-        LocalDate scheduledDate = today.plusDays(request.getDuration());
+        Letter savedLetter = letterRepository.save(request.toEntity());
+        savedLetter.registerReservationKey();
 
-        Letter letter = request.toEntity(scheduledDate);
-        letterRepository.save(letter);
-
-        return LetterResponse.fromEntity(letter);
+        return LetterResponse.fromEntity(savedLetter);
     }
 }
