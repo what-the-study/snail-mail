@@ -10,6 +10,7 @@ import com.snailmail.back.dto.response.LetterDetailResponse;
 import com.snailmail.back.dto.response.LetterReservationKeyResponse;
 import com.snailmail.back.exception.LetterException;
 import com.snailmail.back.repository.LetterRepository;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,12 +61,12 @@ public class LetterService {
 
     private Letter getLetterOrThrow(String reservationKey) {
         return letterRepository.findLetterByReservationKey(reservationKey)
-                .orElseThrow(() -> new LetterException(NOT_FOUND_LETTER_BY_RESERVATION_KEY));
+                .orElseThrow(() -> new LetterException(NOT_FOUND_LETTER_BY_RESERVATION_KEY, Map.of("reservationKey", reservationKey)));
     }
 
     private void validateOriginalPasswordEqualsInputPassword(String originalPassword, String inputPassword) {
         if (!originalPassword.equals(inputPassword)) {
-            throw new LetterException(INVALID_PASSWORD);
+            throw new LetterException(INVALID_PASSWORD, Map.of("password", inputPassword));
         }
     }
 }

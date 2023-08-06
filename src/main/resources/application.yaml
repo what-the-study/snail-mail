@@ -26,3 +26,6 @@ spring:
         show_sql: true
         hbm2ddl:
           auto: create-drop
+  web:
+    resources:
+      add-mappings: false

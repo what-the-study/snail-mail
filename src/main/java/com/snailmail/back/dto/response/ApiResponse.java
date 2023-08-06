@@ -16,7 +16,16 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
+    protected ApiResponse(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>("success", data);
+    }
+
+    public static ApiResponse<Void> fail(String message) {
+        return new ApiResponse<>("fail", message);
     }
 }
