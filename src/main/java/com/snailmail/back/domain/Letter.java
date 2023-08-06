@@ -3,7 +3,6 @@ package com.snailmail.back.domain;
 import com.snailmail.back.utils.StringUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -13,21 +12,16 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "letters")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@EntityListeners(AuditingEntityListener.class)
-public class Letter {
+public class Letter extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,13 +53,6 @@ public class Letter {
 
     @Enumerated(value = EnumType.STRING)
     private LetterStatus letterStatus;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdDatetime;
-
-    @LastModifiedDate
-    private LocalDateTime updatedDatetime;
 
     @Builder
     public Letter(String reservationKey, String senderName, String recipientName,

@@ -1,6 +1,7 @@
 package com.snailmail.back.dto.response;
 
 import com.snailmail.back.domain.Letter;
+import com.snailmail.back.domain.LetterStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class LetterResponse {
     private Integer duration;
     private LocalDate scheduledDate;
     private String content;
+    private LetterStatus letterStatus;
     private LocalDateTime createdDatetime;
     private LocalDateTime updatedDatetime;
 
@@ -35,6 +37,7 @@ public class LetterResponse {
                 .duration(letter.getDuration())
                 .scheduledDate(letter.getScheduledDate())
                 .content(letter.getContent())
+                .letterStatus(letter.getLetterStatus())
                 .createdDatetime(letter.getCreatedDatetime())
                 .updatedDatetime(letter.getUpdatedDatetime())
                 .build();
