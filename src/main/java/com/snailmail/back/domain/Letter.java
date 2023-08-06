@@ -49,7 +49,7 @@ public class Letter extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String password;
 
     @Enumerated(value = EnumType.STRING)

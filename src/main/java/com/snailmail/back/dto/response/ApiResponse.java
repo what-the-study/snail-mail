@@ -1,11 +1,13 @@
 package com.snailmail.back.dto.response;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApiResponse<T> {
 
     private String code;
@@ -28,5 +30,9 @@ public class ApiResponse<T> {
 
     public static ApiResponse<Void> fail(String message) {
         return new ApiResponse<>("fail", message);
+    }
+
+    public static <T> ApiResponse<T> fail(T data, String message) {
+        return new ApiResponse<>("fail", data, message);
     }
 }
