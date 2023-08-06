@@ -3,8 +3,8 @@ package com.snailmail.back.service;
 import com.snailmail.back.domain.Letter;
 import com.snailmail.back.dto.request.LetterCreateRequest;
 import com.snailmail.back.dto.request.LetterUpdateRequest;
+import com.snailmail.back.dto.response.LetterDetailResponse;
 import com.snailmail.back.dto.response.LetterReservationKeyResponse;
-import com.snailmail.back.dto.response.LetterResponse;
 import com.snailmail.back.repository.LetterRepository;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +19,17 @@ public class LetterService {
     private final LetterRepository letterRepository;
 
     @Transactional
-    public LetterResponse createLetter(LetterCreateRequest request) {
+    public LetterReservationKeyResponse createLetter(LetterCreateRequest request) {
         Letter savedLetter = letterRepository.save(request.toEntity());
         savedLetter.registerReservationKey();
 
-        return LetterResponse.fromEntity(savedLetter);
+        return LetterReservationKeyResponse.from(savedLetter.getReservationKey());
     }
 
-    public LetterResponse findLetterByReservationKey(String reservationKey) {
+    public LetterDetailResponse findLetterByReservationKey(String reservationKey) {
         Letter letter = getLetterOrThrow(reservationKey);
 
-        return LetterResponse.fromEntity(letter);
+        return LetterDetailResponse.fromEntity(letter);
     }
 
     @Transactional

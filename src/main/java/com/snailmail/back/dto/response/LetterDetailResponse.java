@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LetterResponse {
+public class LetterDetailResponse {
 
     private Long id;
     private String reservationKey;
@@ -27,8 +27,8 @@ public class LetterResponse {
     private LocalDateTime createdDatetime;
     private LocalDateTime updatedDatetime;
 
-    public static LetterResponse fromEntity(Letter letter) {
-        return LetterResponse.builder()
+    public static LetterDetailResponse fromEntity(Letter letter) {
+        return LetterDetailResponse.builder()
                 .id(letter.getId())
                 .reservationKey(letter.getReservationKey())
                 .senderName(letter.getSenderName())

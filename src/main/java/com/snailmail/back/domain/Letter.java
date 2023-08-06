@@ -10,7 +10,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -26,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class Letter extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(unique = true, length = 100)
@@ -47,7 +46,7 @@ public class Letter extends BaseEntity {
     @Column(nullable = false)
     private Integer duration;
 
-    @Lob
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @Column(nullable = false)

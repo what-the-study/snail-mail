@@ -4,7 +4,7 @@ import com.snailmail.back.dto.request.LetterCreateRequest;
 import com.snailmail.back.dto.request.LetterUpdateRequest;
 import com.snailmail.back.dto.response.ApiResponse;
 import com.snailmail.back.dto.response.LetterReservationKeyResponse;
-import com.snailmail.back.dto.response.LetterResponse;
+import com.snailmail.back.dto.response.LetterDetailResponse;
 import com.snailmail.back.service.LetterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,15 +27,15 @@ public class LetterController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<LetterResponse> createLetter(@RequestBody LetterCreateRequest request) {
-        LetterResponse response = letterService.createLetter(request);
+    public ApiResponse<LetterReservationKeyResponse> createLetter(@RequestBody LetterCreateRequest request) {
+        LetterReservationKeyResponse response = letterService.createLetter(request);
 
         return ApiResponse.success(response);
     }
 
     @GetMapping("/{reservationKey}")
-    public ApiResponse<LetterResponse> findLetterByReservationKey(@PathVariable String reservationKey) {
-        LetterResponse response = letterService.findLetterByReservationKey(reservationKey);
+    public ApiResponse<LetterDetailResponse> findLetterByReservationKey(@PathVariable String reservationKey) {
+        LetterDetailResponse response = letterService.findLetterByReservationKey(reservationKey);
 
         return ApiResponse.success(response);
     }
