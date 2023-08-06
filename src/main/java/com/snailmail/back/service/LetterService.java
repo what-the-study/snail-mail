@@ -1,12 +1,15 @@
 package com.snailmail.back.service;
 
+import static com.snailmail.back.exception.ExceptionRule.INVALID_PASSWORD;
+import static com.snailmail.back.exception.ExceptionRule.NOT_FOUND_LETTER_BY_RESERVATION_KEY;
+
 import com.snailmail.back.domain.Letter;
 import com.snailmail.back.dto.request.LetterCreateRequest;
 import com.snailmail.back.dto.request.LetterUpdateRequest;
 import com.snailmail.back.dto.response.LetterDetailResponse;
 import com.snailmail.back.dto.response.LetterReservationKeyResponse;
+import com.snailmail.back.exception.LetterException;
 import com.snailmail.back.repository.LetterRepository;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,12 +60,12 @@ public class LetterService {
 
     private Letter getLetterOrThrow(String reservationKey) {
         return letterRepository.findLetterByReservationKey(reservationKey)
-                .orElseThrow(() -> new NoSuchElementException("해당 예약번호로 조회되는 편지가 없습니다."));
+                .orElseThrow(() -> new LetterException(NOT_FOUND_LETTER_BY_RESERVATION_KEY));
     }
 
     private void validateOriginalPasswordEqualsInputPassword(String originalPassword, String inputPassword) {
         if (!originalPassword.equals(inputPassword)) {
-            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+            throw new LetterException(INVALID_PASSWORD);
         }
     }
 }
