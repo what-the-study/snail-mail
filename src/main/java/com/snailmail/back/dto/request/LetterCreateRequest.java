@@ -1,5 +1,7 @@
 package com.snailmail.back.dto.request;
 
+import static com.snailmail.back.utils.DateUtil.calculateDateAfterDurationFromToday;
+
 import com.snailmail.back.domain.Letter;
 import com.snailmail.back.domain.LetterStatus;
 import java.time.LocalDate;
@@ -18,21 +20,17 @@ public class LetterCreateRequest {
     private String password;
 
     public Letter toEntity() {
+        LocalDate scheduledDate = calculateDateAfterDurationFromToday(duration);
+
         return Letter.builder()
                 .senderName(senderName)
                 .recipientName(recipientName)
                 .recipientEmail(recipientEmail)
                 .duration(duration)
-                .scheduledDate(getScheduledDate())
+                .scheduledDate(scheduledDate)
                 .content(content)
                 .password(password)
                 .letterStatus(LetterStatus.SCHEDULED)
                 .build();
-    }
-
-    private LocalDate getScheduledDate() {
-        LocalDate today = LocalDate.now();
-
-        return today.plusDays(duration);
     }
 }

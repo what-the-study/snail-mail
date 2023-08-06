@@ -1,5 +1,7 @@
 package com.snailmail.back.domain;
 
+import static com.snailmail.back.utils.DateUtil.calculateDateAfterDurationFromToday;
+
 import com.snailmail.back.utils.StringUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -75,5 +77,22 @@ public class Letter extends BaseEntity {
         String suffix = StringUtil.getRandomUppercaseString();
 
         this.reservationKey = MessageFormat.format("{0}{1}{2}", prefix, infix, suffix);
+    }
+
+    public void updateSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public void updateRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public void updateDurationAndScheduledDate(Integer duration) {
+        this.duration = duration;
+        this.scheduledDate = calculateDateAfterDurationFromToday(duration);
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 }

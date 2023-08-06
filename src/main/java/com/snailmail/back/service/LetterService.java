@@ -2,6 +2,8 @@ package com.snailmail.back.service;
 
 import com.snailmail.back.domain.Letter;
 import com.snailmail.back.dto.request.LetterCreateRequest;
+import com.snailmail.back.dto.request.LetterUpdateRequest;
+import com.snailmail.back.dto.response.LetterReservationKeyResponse;
 import com.snailmail.back.dto.response.LetterResponse;
 import com.snailmail.back.repository.LetterRepository;
 import java.util.NoSuchElementException;
@@ -25,9 +27,29 @@ public class LetterService {
     }
 
     public LetterResponse findLetterByReservationKey(String reservationKey) {
-        Letter letter = letterRepository.findLetterByReservationKey(reservationKey)
-                .orElseThrow(() -> new NoSuchElementException("해당 예약번호로 조회되는 편지가 없습니다."));
+        Letter letter = getLetterOrThrow(reservationKey);
 
         return LetterResponse.fromEntity(letter);
+    }
+
+    @Transactional
+    public LetterReservationKeyResponse updateLetter(String reservationKey, String password, LetterUpdateRequest request) {
+        Letter letter = getLetterOrThrow(reservationKey);
+
+        if (!password.equals(letter.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+        }
+
+        letter.updateSenderName(request.getSenderName());
+        letter.updateRecipientName(request.getRecipientName());
+        letter.updateDurationAndScheduledDate(request.getDuration());
+        letter.updateContent(request.getContent());
+
+        return LetterReservationKeyResponse.from(letter.getReservationKey());
+    }
+
+    private Letter getLetterOrThrow(String reservationKey) {
+        return letterRepository.findLetterByReservationKey(reservationKey)
+                .orElseThrow(() -> new NoSuchElementException("해당 예약번호로 조회되는 편지가 없습니다."));
     }
 }
