@@ -1,10 +1,11 @@
 package com.snailmail.back.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LetterUpdateRequest {
 
     private String senderName;

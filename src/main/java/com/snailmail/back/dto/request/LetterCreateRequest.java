@@ -5,11 +5,12 @@ import static com.snailmail.back.utils.DateUtil.calculateDateAfterDurationFromTo
 import com.snailmail.back.domain.Letter;
 import com.snailmail.back.domain.LetterStatus;
 import java.time.LocalDate;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LetterCreateRequest {
 
     private String senderName;

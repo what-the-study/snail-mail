@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "letters")
+@Table(name = "letter")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Letter extends BaseEntity {
@@ -56,7 +56,7 @@ public class Letter extends BaseEntity {
     private LetterStatus letterStatus;
 
     @Builder
-    public Letter(String reservationKey, String senderName, String recipientName,
+    private Letter(String reservationKey, String senderName, String recipientName,
             String recipientEmail, LocalDate scheduledDate, Integer duration,
             String content, String password, LetterStatus letterStatus) {
         this.reservationKey = reservationKey;
