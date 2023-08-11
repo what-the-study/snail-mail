@@ -1,11 +1,12 @@
 package com.snailmail.back.controller;
 
-import com.snailmail.back.dto.request.LetterCreateRequest;
-import com.snailmail.back.dto.request.LetterUpdateRequest;
-import com.snailmail.back.dto.response.ApiResponse;
-import com.snailmail.back.dto.response.LetterDetailResponse;
-import com.snailmail.back.dto.response.LetterReservationKeyResponse;
+import com.snailmail.back.dto.request.LetterCreateRequestDto;
+import com.snailmail.back.dto.request.LetterUpdateRequestDto;
+import com.snailmail.back.dto.response.ApiResponseDto;
+import com.snailmail.back.dto.response.LetterDetailResponseDto;
+import com.snailmail.back.dto.response.LetterReservationKeyResponseDto;
 import com.snailmail.back.service.LetterService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,34 +29,36 @@ public class LetterController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<LetterReservationKeyResponse> createLetter(@RequestBody LetterCreateRequest request) {
-        LetterReservationKeyResponse response = letterService.createLetter(request);
+    public ApiResponseDto<LetterReservationKeyResponseDto> createLetter(@Valid @RequestBody LetterCreateRequestDto request) {
+        LetterReservationKeyResponseDto response = letterService.createLetter(request);
 
-        return ApiResponse.success(response);
+        return ApiResponseDto.success(response);
     }
 
     @GetMapping("/{reservationKey}")
-    public ApiResponse<LetterDetailResponse> findLetterByReservationKey(@PathVariable String reservationKey) {
-        LetterDetailResponse response = letterService.findLetterByReservationKey(reservationKey);
+    public ApiResponseDto<LetterDetailResponseDto> findLetterByReservationKey(@PathVariable String reservationKey) {
+        LetterDetailResponseDto response = letterService.findLetterByReservationKey(reservationKey);
 
-        return ApiResponse.success(response);
+        return ApiResponseDto.success(response);
     }
 
     @PatchMapping("/{reservationKey}")
-    public ApiResponse<LetterReservationKeyResponse> updateLetterByReservationKey(
+    public ApiResponseDto<LetterReservationKeyResponseDto> updateLetterByReservationKey(
             @PathVariable String reservationKey,
             @RequestHeader String password,
-            @RequestBody LetterUpdateRequest request) {
-        LetterReservationKeyResponse response = letterService.updateLetter(reservationKey, password, request);
+            @Valid @RequestBody LetterUpdateRequestDto request) {
+        LetterReservationKeyResponseDto response = letterService.updateLetter(reservationKey, password, request);
 
-        return ApiResponse.success(response);
+        return ApiResponseDto.success(response);
     }
 
     @DeleteMapping("/{reservationKey}")
-    public ApiResponse<LetterReservationKeyResponse> deleteLetterByReservationKey(@PathVariable String reservationKey, @RequestHeader String password) {
-        LetterReservationKeyResponse response = letterService.deleteLetterByReservationKey(reservationKey, password);
+    public ApiResponseDto<LetterReservationKeyResponseDto> deleteLetterByReservationKey(
+            @PathVariable String reservationKey,
+            @RequestHeader String password) {
+        LetterReservationKeyResponseDto response = letterService.deleteLetterByReservationKey(reservationKey, password);
 
-        return ApiResponse.success(response);
+        return ApiResponseDto.success(response);
     }
 
 }
