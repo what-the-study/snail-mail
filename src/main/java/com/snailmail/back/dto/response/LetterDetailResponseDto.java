@@ -4,16 +4,17 @@ import com.snailmail.back.domain.Letter;
 import com.snailmail.back.domain.LetterStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class LetterDetailResponse {
+public class LetterDetailResponseDto {
 
     private Long id;
     private String reservationKey;
@@ -27,8 +28,8 @@ public class LetterDetailResponse {
     private LocalDateTime createdDatetime;
     private LocalDateTime updatedDatetime;
 
-    public static LetterDetailResponse fromEntity(Letter letter) {
-        return LetterDetailResponse.builder()
+    public static LetterDetailResponseDto fromEntity(Letter letter) {
+        return LetterDetailResponseDto.builder()
                 .id(letter.getId())
                 .reservationKey(letter.getReservationKey())
                 .senderName(letter.getSenderName())

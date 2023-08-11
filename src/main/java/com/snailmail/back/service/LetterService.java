@@ -1,12 +1,16 @@
 package com.snailmail.back.service;
 
+import static com.snailmail.back.exception.ExceptionRule.INVALID_PASSWORD;
+import static com.snailmail.back.exception.ExceptionRule.NOT_FOUND_LETTER_BY_RESERVATION_KEY;
+
 import com.snailmail.back.domain.Letter;
-import com.snailmail.back.dto.request.LetterCreateRequest;
-import com.snailmail.back.dto.request.LetterUpdateRequest;
-import com.snailmail.back.dto.response.LetterDetailResponse;
-import com.snailmail.back.dto.response.LetterReservationKeyResponse;
+import com.snailmail.back.dto.request.LetterCreateRequestDto;
+import com.snailmail.back.dto.request.LetterUpdateRequestDto;
+import com.snailmail.back.dto.response.LetterDetailResponseDto;
+import com.snailmail.back.dto.response.LetterReservationKeyResponseDto;
+import com.snailmail.back.exception.LetterException;
 import com.snailmail.back.repository.LetterRepository;
-import java.util.NoSuchElementException;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,21 +23,21 @@ public class LetterService {
     private final LetterRepository letterRepository;
 
     @Transactional
-    public LetterReservationKeyResponse createLetter(LetterCreateRequest request) {
+    public LetterReservationKeyResponseDto createLetter(LetterCreateRequestDto request) {
         Letter savedLetter = letterRepository.save(request.toEntity());
         savedLetter.registerReservationKey();
 
-        return LetterReservationKeyResponse.from(savedLetter.getReservationKey());
+        return LetterReservationKeyResponseDto.from(savedLetter.getReservationKey());
     }
 
-    public LetterDetailResponse findLetterByReservationKey(String reservationKey) {
+    public LetterDetailResponseDto findLetterByReservationKey(String reservationKey) {
         Letter letter = getLetterOrThrow(reservationKey);
 
-        return LetterDetailResponse.fromEntity(letter);
+        return LetterDetailResponseDto.fromEntity(letter);
     }
 
     @Transactional
-    public LetterReservationKeyResponse updateLetter(String reservationKey, String password, LetterUpdateRequest request) {
+    public LetterReservationKeyResponseDto updateLetter(String reservationKey, String password, LetterUpdateRequestDto request) {
         Letter letter = getLetterOrThrow(reservationKey);
         validateOriginalPasswordEqualsInputPassword(letter.getPassword(), password);
 
@@ -42,27 +46,27 @@ public class LetterService {
         letter.updateDurationAndScheduledDate(request.getDuration());
         letter.updateContent(request.getContent());
 
-        return LetterReservationKeyResponse.from(reservationKey);
+        return LetterReservationKeyResponseDto.from(reservationKey);
     }
 
     @Transactional
-    public LetterReservationKeyResponse deleteLetterByReservationKey(String reservationKey, String password) {
+    public LetterReservationKeyResponseDto deleteLetterByReservationKey(String reservationKey, String password) {
         Letter letter = getLetterOrThrow(reservationKey);
         validateOriginalPasswordEqualsInputPassword(letter.getPassword(), password);
 
         letterRepository.delete(letter);
 
-        return LetterReservationKeyResponse.from(reservationKey);
+        return LetterReservationKeyResponseDto.from(reservationKey);
     }
 
     private Letter getLetterOrThrow(String reservationKey) {
         return letterRepository.findLetterByReservationKey(reservationKey)
-                .orElseThrow(() -> new NoSuchElementException("해당 예약번호로 조회되는 편지가 없습니다."));
+                .orElseThrow(() -> new LetterException(NOT_FOUND_LETTER_BY_RESERVATION_KEY, Map.of("reservationKey", reservationKey)));
     }
 
     private void validateOriginalPasswordEqualsInputPassword(String originalPassword, String inputPassword) {
         if (!originalPassword.equals(inputPassword)) {
-            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+            throw new LetterException(INVALID_PASSWORD, Map.of("password", inputPassword));
         }
     }
 }
