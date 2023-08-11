@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LetterCreateRequest {
+public class LetterCreateRequestDto {
 
     @NotBlank(message = "보내는 사람의 이름을 입력하세요.")
     @Size(max = 15, message = "보내는 사람의 이름은 15글자 이하로 입력하세요.")

@@ -9,22 +9,22 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ErrorResponse {
+public class ErrorResponseDto {
 
     private String field;
     private String message;
     private String rejectedValue;
 
-    private ErrorResponse(String field, String message) {
+    private ErrorResponseDto(String field, String message) {
         this.field = field;
         this.message = message;
     }
 
-    public static ErrorResponse of(String field, String message, Optional<Object> rejectedValue) {
+    public static ErrorResponseDto of(String field, String message, Optional<Object> rejectedValue) {
         if (rejectedValue.isPresent()) {
-            return new ErrorResponse(field, message, rejectedValue.toString());
+            return new ErrorResponseDto(field, message, rejectedValue.toString());
         }
 
-        return new ErrorResponse(field, message);
+        return new ErrorResponseDto(field, message);
     }
 }

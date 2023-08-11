@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class LetterDetailResponse {
+public class LetterDetailResponseDto {
 
     private Long id;
     private String reservationKey;
@@ -28,8 +28,8 @@ public class LetterDetailResponse {
     private LocalDateTime createdDatetime;
     private LocalDateTime updatedDatetime;
 
-    public static LetterDetailResponse fromEntity(Letter letter) {
-        return LetterDetailResponse.builder()
+    public static LetterDetailResponseDto fromEntity(Letter letter) {
+        return LetterDetailResponseDto.builder()
                 .id(letter.getId())
                 .reservationKey(letter.getReservationKey())
                 .senderName(letter.getSenderName())
