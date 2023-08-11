@@ -35,21 +35,34 @@ public class LetterService {
     @Transactional
     public LetterReservationKeyResponse updateLetter(String reservationKey, String password, LetterUpdateRequest request) {
         Letter letter = getLetterOrThrow(reservationKey);
-
-        if (!password.equals(letter.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
-        }
+        validateOriginalPasswordEqualsInputPassword(letter.getPassword(), password);
 
         letter.updateSenderName(request.getSenderName());
         letter.updateRecipientName(request.getRecipientName());
         letter.updateDurationAndScheduledDate(request.getDuration());
         letter.updateContent(request.getContent());
 
-        return LetterReservationKeyResponse.from(letter.getReservationKey());
+        return LetterReservationKeyResponse.from(reservationKey);
+    }
+
+    @Transactional
+    public LetterReservationKeyResponse deleteLetterByReservationKey(String reservationKey, String password) {
+        Letter letter = getLetterOrThrow(reservationKey);
+        validateOriginalPasswordEqualsInputPassword(letter.getPassword(), password);
+
+        letterRepository.delete(letter);
+
+        return LetterReservationKeyResponse.from(reservationKey);
     }
 
     private Letter getLetterOrThrow(String reservationKey) {
         return letterRepository.findLetterByReservationKey(reservationKey)
                 .orElseThrow(() -> new NoSuchElementException("해당 예약번호로 조회되는 편지가 없습니다."));
+    }
+
+    private void validateOriginalPasswordEqualsInputPassword(String originalPassword, String inputPassword) {
+        if (!originalPassword.equals(inputPassword)) {
+            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+        }
     }
 }

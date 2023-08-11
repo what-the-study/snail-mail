@@ -3,11 +3,12 @@ package com.snailmail.back.controller;
 import com.snailmail.back.dto.request.LetterCreateRequest;
 import com.snailmail.back.dto.request.LetterUpdateRequest;
 import com.snailmail.back.dto.response.ApiResponse;
-import com.snailmail.back.dto.response.LetterReservationKeyResponse;
 import com.snailmail.back.dto.response.LetterDetailResponse;
+import com.snailmail.back.dto.response.LetterReservationKeyResponse;
 import com.snailmail.back.service.LetterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +42,7 @@ public class LetterController {
     }
 
     @PatchMapping("/{reservationKey}")
-    public ApiResponse<LetterReservationKeyResponse> updateLetter(
+    public ApiResponse<LetterReservationKeyResponse> updateLetterByReservationKey(
             @PathVariable String reservationKey,
             @RequestHeader String password,
             @RequestBody LetterUpdateRequest request) {
@@ -49,4 +50,12 @@ public class LetterController {
 
         return ApiResponse.success(response);
     }
+
+    @DeleteMapping("/{reservationKey}")
+    public ApiResponse<LetterReservationKeyResponse> deleteLetterByReservationKey(@PathVariable String reservationKey, @RequestHeader String password) {
+        LetterReservationKeyResponse response = letterService.deleteLetterByReservationKey(reservationKey, password);
+
+        return ApiResponse.success(response);
+    }
+
 }
